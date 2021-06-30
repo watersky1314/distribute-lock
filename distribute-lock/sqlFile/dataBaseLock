@@ -1,0 +1,11 @@
+CREATE TABLE `resource_lock` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `resource_tag` varchar(255) NOT NULL COMMENT '资源标识',
+  `request_id` varchar(255) NOT NULL COMMENT '请求唯一标识',
+  `expire_time` bigint DEFAULT NULL COMMENT '过期时间（单位：毫秒）',
+  `content_desc` varchar(255) DEFAULT NULL COMMENT '描述内容',
+  `create_time` timestamp NOT NULL COMMENT '创建时间',
+  `update_time` timestamp NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unq_resource` (`resource_tag`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

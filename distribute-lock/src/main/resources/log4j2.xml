@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Log4j 2.x 配置文件。每30秒自动检查和应用配置文件的更新； -->
+<Configuration status="warn" monitorInterval="30" strict="true" schema="Log4J-V2.2.xsd">
+    <Appenders>
+        <!-- 输出到控制台 -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <!-- 需要记录的级别 -->
+            <!--<ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY" />-->
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS}:%5p %t (%F:%L) - %m%n"/>
+        </Console>
+
+        <!-- 输出到文件，按天或者超过100MB分割 -->
+        <RollingFile name="logGlobalRollingFile" fileName="./logs/distribute-lock.log"
+                     filePattern="./logs/distributeLockLog/$${date:yyyy-MM}/distributeLock-%d{yyyy-MM-dd}-%i.log">
+            <!-- 需要记录的级别 -->
+            <!-- <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY" /> -->
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS}:%5p %t (%F:%L) - %m%n"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+        </RollingFile>
+
+    </Appenders>
+
+    <Loggers>
+        <Root level="info"> <!-- 全局配置 -->
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="logGlobalRollingFile"/>
+        </Root>
+        <Logger name="com.unisound" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="logGlobalRollingFile"/>
+        </Logger>
+
+        <Logger name="feign" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="logGlobalRollingFile"/>
+        </Logger>
+
+        <Logger name="org.springframework" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="logGlobalRollingFile"/>
+        </Logger>
+
+    </Loggers>
+
+    <Loggers>
+        <Root level="info"> <!-- 全局配置 -->
+            <AppenderRef ref="Console"/>
+        </Root>
+        <Logger name="org.springframework" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="logGlobalRollingFile"/>
+        </Logger>
+        <!-- 为sql语句配置特殊的Log级别，方便调试 -->
+        <Logger name="com.example" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="logGlobalRollingFile"/>
+        </Logger>
+
+    </Loggers>
+</Configuration>
